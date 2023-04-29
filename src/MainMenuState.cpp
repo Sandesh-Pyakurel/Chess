@@ -43,7 +43,6 @@ namespace Chess
             }
             if ( this->_data->input.IsSpriteClicked( this->_playHuman10Button, sf::Mouse::Left, this->_data->window ) )
             {
-                std::cout << "hello.\n"; 
                 this->_data->machine.AddState( StateRef( new GameState( _data ) ), true ); 
             }
         }

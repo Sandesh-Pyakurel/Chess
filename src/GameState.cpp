@@ -17,7 +17,7 @@ namespace Chess
     {
         sf::Event event;
 
-        while( this->_data->window.pollEvent( event ) )
+        while( this->_data->window.waitEvent( event ) )
         {
             if ( sf::Event::Closed == event.type )
             {
