@@ -28,6 +28,7 @@ namespace Chess
         this->_data->assets.LoadTexture( "White Queen", WHITE_QUEEN_FILEPATH );
 
        _player1 = std::make_unique<Player>( _data, false, true ); 
+        _player2 = std::make_unique<Player>( _data, false, false );
 
     }
 
@@ -55,6 +56,7 @@ namespace Chess
 
         _board->DrawBoard(  );
         _player1->Draw(  );
+        _player2->Draw(  );
         
         _data->window.display(  );
     }
