@@ -3,6 +3,7 @@
 #include "State.hpp"
 #include "Game.hpp"
 #include "GameBoard.hpp"
+#include "Player.hpp"
 
 namespace Chess
 {
@@ -22,5 +23,8 @@ namespace Chess
         GameDataRef _data;
 
         std::unique_ptr<GameBoard> _board;
+        
+        std::unique_ptr<Player> _player1;
+        std::unique_ptr<Player> _player2;
    };
 }
