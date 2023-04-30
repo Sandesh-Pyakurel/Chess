@@ -13,6 +13,7 @@ namespace Chess
 
         GameBoard( GameDataRef data );
 
+        void Update(  );
         void DrawBoard(  );
 
     private:

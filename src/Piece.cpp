@@ -10,8 +10,36 @@ namespace Chess
         this->_piece.setPosition( sf::Vector2f( _cord.x, _cord.y ) );
     }
 
+    struct Cordinate Piece::getCordinate(  )
+    {
+        return this->_cord;
+    }
+
+    void Piece::setCordinate( struct Cordinate cord )
+    {
+       this->_cord = cord;
+    }
+
+    bool Piece::isCaptured(  )
+    {
+        return this->_isCaptured;
+    }
+
+    void Piece::setCaptured(  )
+    {
+        this->_isCaptured = true;
+    }
+
+    void Piece::Update(  )
+    {
+        this->_piece.setPosition( sf::Vector2f( _cord.x, _cord.y ) );
+    }
+
     void Piece::Draw(  )
     {
-        this->_data->window.draw( this->_piece );
+        if ( !_isCaptured )
+        {
+            this->_data->window.draw( this->_piece );
+        }
     }
 }

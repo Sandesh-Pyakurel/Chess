@@ -47,6 +47,26 @@ namespace Chess
         }
     }
 
+    Piece* Player::pieceClicked( struct Cordinate cord )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            if ( ( _pieces.at( i )->getCordinate(  ) == cord ) )
+            {
+                return _pieces.at( i );
+            }
+        }
+        return nullptr;
+    }
+
+    void Player::Update(  )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            _pieces.at( i )->Update(  );
+        }
+    }
+
     void Player::Draw(  )
     {
         for ( int i = 0; i < _pieces.size(  ); i++ )
