@@ -4,6 +4,7 @@
 #include "Game.hpp"
 #include "GameBoard.hpp"
 #include "Player.hpp"
+#include "Piece.hpp"
 
 namespace Chess
 {
@@ -26,5 +27,9 @@ namespace Chess
         
         std::unique_ptr<Player> _player1;
         std::unique_ptr<Player> _player2;
+
+        Piece* _clickedPiece = nullptr;
+
+        bool _isWhiteTurn = true;
    };
 }

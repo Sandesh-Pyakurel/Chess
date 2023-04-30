@@ -11,6 +11,9 @@ namespace Chess
     public:
         Player( GameDataRef data, bool engine, bool isWhite );
 
+        Piece* pieceClicked( struct Cordinate cord );
+
+        void Update(  );
         void Draw(  );
     private:
         bool _engine;

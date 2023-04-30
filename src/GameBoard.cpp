@@ -25,6 +25,11 @@ namespace Chess
         }
     }
 
+    void GameBoard::Update(  )
+    {
+
+    }
+
     void GameBoard::DrawBoard(  )
     {
         for ( int rank = 0; rank < 8; rank++ )

@@ -8,6 +8,17 @@ namespace Chess
     struct Cordinate
     {
         int x, y;
+
+        bool operator==( Cordinate c1 )
+        {
+            return ( x==c1.x && y==c1.y );
+        }
+
+        void operator=( Cordinate c1 )
+        {
+           x=c1.x;
+           y=c1.y;
+        }
     };
 
     class Piece
@@ -15,6 +26,13 @@ namespace Chess
     public:
         Piece( GameDataRef data, int pieceId, bool isWhite, std::string name, int x, int y );
 
+        struct Cordinate getCordinate(  );
+
+        void setCordinate( struct Cordinate cord );
+        bool isCaptured(  );
+        void setCaptured(  ); 
+
+        void Update(  );
         void Draw(  );
 
     private:
