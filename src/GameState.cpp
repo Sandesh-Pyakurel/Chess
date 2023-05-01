@@ -10,6 +10,8 @@ namespace Chess
 
     void GameState::Init(  )
     {
+        // Initializing assets required for gamestate.
+        
         _board = std::make_unique<GameBoard>( _data ); 
 
         this->_data->assets.LoadTexture( "Black Pawn", BLACK_PAWN_FILEPATH );
@@ -35,7 +37,7 @@ namespace Chess
     void GameState::HandleInput(  )
     {
         sf::Event event;
-
+        
         while( this->_data->window.pollEvent( event ) )
         {
             if ( sf::Event::Closed == event.type )
@@ -43,23 +45,63 @@ namespace Chess
                 this->_data->window.close(  );  
             }
 
-            if ( sf::Mouse::isButtonPressed( sf::Mouse::Left ) )
+            // Handling mouse click event for piece movement.
+
+            if ( sf::Event::MouseButtonPressed == event.type )
             {
                 int mouse_x = sf::Mouse::getPosition( _data->window ).x;
                 int mouse_y = sf::Mouse::getPosition( _data->window ).y;
+
+                // Checking if mouse coordinate is in the board. 
 
                 if(((mouse_x >= BOARD_POSITION_X) && (mouse_x <= BOARD_POSITION_X + 8*BLOCK_SIZE )) && ( (mouse_y >= BOARD_POSITION_Y) && (mouse_y <= BOARD_POSITION_Y + 8*BLOCK_SIZE )))
                 {
                     struct Cordinate cord;
                                                                                
+                    // Substracting board offset form actual position to find index of box and add back to adjust real position.
                     cord.x =(( mouse_x - BOARD_POSITION_X ) / BLOCK_SIZE) * BLOCK_SIZE + BOARD_POSITION_X;
                     cord.y =(( mouse_y - BOARD_POSITION_Y ) / BLOCK_SIZE) * BLOCK_SIZE + BOARD_POSITION_Y;
 
+                    // Handling the piece movement once it has been pressed.
                     if ( _clickedPiece )
                     {
-                        _clickedPiece->setCordinate( cord );
-                        _clickedPiece = nullptr;
+                        if (! (_clickedPiece->getCordinate(  ) == cord ))
+                        {
+                            if ( _isWhiteTurn )
+                            {
+                                if ( _player2->pieceClicked( cord ) )
+                                {
+                                    _player2->pieceClicked( cord )->setCaptured(  ); // deleting if captured.
+                                }
+                                else if ( _player1->pieceClicked( cord ) )
+                                {
+                                    _clickedPiece = nullptr;  // cannot move to the location with same color piece.
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if ( _player1->pieceClicked( cord ) )
+                                {
+                                    _player1->pieceClicked( cord )->setCaptured(  );
+                                }
+                                else if ( _player2->pieceClicked( cord ) )
+                                {
+                                    _clickedPiece = nullptr;
+                                    break;
+                                }
+                            }
+
+                            _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
+                            _clickedPiece = nullptr;
+                            _isWhiteTurn = !_isWhiteTurn;
+                        }
+                        else
+                        {
+                            _clickedPiece = nullptr; // cannot move to the same location where clickedpiece is present.
+                        }
                     }
+                    // checking if clicked location has any piece and Initializing _clickedPiece variable.
                     else
                     {
                          if ( _isWhiteTurn )
@@ -80,7 +122,7 @@ namespace Chess
             }
         }
     }
-
+ 
     void GameState::Update(  )
     {
         _player1->Update(  );
