@@ -15,11 +15,11 @@ namespace Chess
 
                 if ( ( rank + file ) % 2 == 0 )
                 {
-                    _boxes[rank][file].setFillColor( sf::Color::White ); 
+                    _boxes[rank][file].setFillColor( sf::Color{ 255, 240, 255 } ); 
                 }
                 else
                 {
-                    _boxes[rank][file].setFillColor( sf::Color::Green );
+                    _boxes[rank][file].setFillColor( sf::Color{ 218, 160, 109 } );
                 }
             }
         }
