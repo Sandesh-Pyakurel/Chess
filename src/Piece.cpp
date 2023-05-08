@@ -20,7 +20,7 @@ namespace Chess
        this->_cord = cord;
     }
 
-    bool Piece::isCaptured(  )
+    bool Piece::isCaptured( ) 
     {
         return this->_isCaptured;
     }
@@ -28,6 +28,16 @@ namespace Chess
     void Piece::setCaptured(  )
     {
         this->_isCaptured = true;
+    }
+
+    int Piece::getPieceId(  )
+    {
+        return _pieceId; 
+    }
+
+    bool Piece::isWhite(  )
+    {
+        return _isWhite;
     }
 
     void Piece::Update(  )

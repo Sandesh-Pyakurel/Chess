@@ -69,36 +69,56 @@ namespace Chess
                         {
                             if ( _isWhiteTurn )
                             {
-                                if ( _player2->pieceClicked( cord ) )
+                                if ( _player1->canMove( cord ) )
                                 {
-                                    _player2->pieceClicked( cord )->setCaptured(  ); // deleting if captured.
-                                }
-                                else if ( _player1->pieceClicked( cord ) )
+                                    if ( _player2->pieceClicked( cord ) )
+                                    {
+                                        _player2->pieceClicked( cord )->setCaptured(  ); // deleting if captured.
+                                    }
+
+                                    _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
+                                    _clickedPiece = nullptr;
+                                    _isWhiteTurn = !_isWhiteTurn;
+                                    _player1->removeMoves( );
+                                    _board->removeHighlight(  );
+                                }    
+                                else
                                 {
-                                    _clickedPiece = nullptr;  // cannot move to the location with same color piece.
+                                    _clickedPiece = nullptr;
+                                    _player1->removeMoves(  );
+                                    _board->removeHighlight(  );
                                     break;
                                 }
                             }
                             else
                             {
-                                if ( _player1->pieceClicked( cord ) )
+                                if ( _player2->canMove( cord ) )
                                 {
-                                    _player1->pieceClicked( cord )->setCaptured(  );
+                                    if ( _player1->pieceClicked( cord ) )
+                                    {
+                                        _player1->pieceClicked( cord )->setCaptured(  );
+                                    }
+                                    _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
+                                    _clickedPiece = nullptr;
+                                    _isWhiteTurn = !_isWhiteTurn;
+                                    _player2->removeMoves( );
+                                    _board->removeHighlight(  );
                                 }
-                                else if ( _player2->pieceClicked( cord ) )
+                                else
                                 {
                                     _clickedPiece = nullptr;
+                                    _player2->removeMoves(  );
+                                    _board->removeHighlight(  );
                                     break;
                                 }
                             }
-
-                            _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
-                            _clickedPiece = nullptr;
-                            _isWhiteTurn = !_isWhiteTurn;
-                        }
+                        }   
                         else
                         {
                             _clickedPiece = nullptr; // cannot move to the same location where clickedpiece is present.
+                            _player1->removeMoves(  );
+                            _player2->removeMoves(  );
+                            _board->removeHighlight(  );                         
                         }
                     }
                     // checking if clicked location has any piece and Initializing _clickedPiece variable.
@@ -107,10 +127,20 @@ namespace Chess
                          if ( _isWhiteTurn )
                          {
                              _clickedPiece = _player1->pieceClicked( cord );
+                            if ( _clickedPiece )
+                            {
+                                _player1->generateMoves( _clickedPiece );
+                                _board->highlight( _player1->getMoves(  ) ); 
+                            }
                          }
                          else
                          {
                              _clickedPiece = _player2->pieceClicked( cord );
+                            if ( _clickedPiece )
+                            {
+                                _player2->generateMoves( _clickedPiece );
+                                _board->highlight( _player2->getMoves(  ) );
+                            }
                          }
                          if( _clickedPiece )
                          {
