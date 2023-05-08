@@ -31,6 +31,8 @@ namespace Chess
         void setCordinate( struct Cordinate cord );
         bool isCaptured(  );
         void setCaptured(  ); 
+        int getPieceId(  );
+        bool isWhite(  );
 
         void Update(  );
         void Draw(  );

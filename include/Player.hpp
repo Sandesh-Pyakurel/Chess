@@ -4,6 +4,8 @@
 #include "DEFINITIONS.hpp"
 #include "Piece.hpp"
 
+#include <iostream>
+
 namespace Chess
 {
     class Player
@@ -12,6 +14,10 @@ namespace Chess
         Player( GameDataRef data, bool engine, bool isWhite );
 
         Piece* pieceClicked( struct Cordinate cord );
+        bool canMove( Cordinate cord );
+        void removeMoves(  );
+        void generateMoves( Piece* clickedPiece );
+        std::vector<Cordinate>* getMoves(  );
 
         void Update(  );
         void Draw(  );
@@ -21,5 +27,9 @@ namespace Chess
         GameDataRef _data;
 
         std::vector<Piece*> _pieces;
+        std::vector<Cordinate> _moves;
+
+
+        void pawnMoves( Piece* clickedPiece );
     };
 }
