@@ -2,6 +2,8 @@
 
 namespace Chess
 {
+    std::vector<Piece*> _pieces;
+
     Player::Player(GameDataRef data, bool engine, bool isWhite) : _data(data), _engine(engine), _isWhite(isWhite)
     {
         if (isWhite)
@@ -54,10 +56,6 @@ namespace Chess
 
     bool Player::canMove(Cordinate cord)
     {
-        for ( int j=0;j<_moves.size();j++ )
-        {
-            std::cout<<_moves.at(j).x<<" , "<<_moves.at(j).y<<std::endl;
-        }
         for (int i = 0; i < _moves.size(); i++)
         {
             if (cord == _moves.at(i))
@@ -102,6 +100,7 @@ namespace Chess
             {
                 if (cord == _pieces.at(i)->getCordinate())
                 {
+                    std::cout<<"hello.\n";
                     flag = 1;
                 }
                 if ( clickedPiece->getCordinate().y == BOARD_POSITION_Y + 6 * BLOCK_SIZE)
@@ -152,11 +151,11 @@ namespace Chess
                         flag1 = 1;
                     }
                 }
-                if ((cord1 == _pieces.at(i)->getCordinate()) && !_pieces.at(i)->isWhite())
+                if ((cord1 == _pieces.at(i)->getCordinate()) && _pieces.at(i)->isWhite())
                 {
                     _moves.push_back(cord1);
                 }
-                if (cord2 == _pieces.at(i)->getCordinate() && !_pieces.at(i)->isWhite())
+                if (cord2 == _pieces.at(i)->getCordinate() && _pieces.at(i)->isWhite())
                 {
                     _moves.push_back(cord2);
                 }

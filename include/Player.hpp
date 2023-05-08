@@ -26,7 +26,6 @@ namespace Chess
         bool _isWhite;
         GameDataRef _data;
 
-        std::vector<Piece*> _pieces;
         std::vector<Cordinate> _moves;
 
 
