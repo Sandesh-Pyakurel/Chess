@@ -144,7 +144,7 @@ namespace Chess
             cord2.x -= 1 * BLOCK_SIZE;
             cord3.y -= 1 * BLOCK_SIZE;
             int flag = 0;
-            int flag1 = 0;
+            int flag1 = 1;
             for (int i = 0; i < _pieces.size(); i++)
             {
                 if (cord == _pieces.at(i)->getCordinate())
@@ -153,10 +153,14 @@ namespace Chess
                 }
                 if ( clickedPiece->getCordinate().y == BOARD_POSITION_Y + 6 * BLOCK_SIZE)
                 {
-                    if (!(cord3 == _pieces.at(i)->getCordinate()))
+                    if (cord3 == _pieces.at(i)->getCordinate())
                     {
-                        flag1 = 1;
+                        flag1 = 0;
                     }
+                }
+                else
+                {
+                    flag1 = 0;
                 }
                 if ((cord1 == _pieces.at(i)->getCordinate()) && !_pieces.at(i)->isWhite())
                 {
@@ -185,7 +189,7 @@ namespace Chess
             cord2.x -= 1 * BLOCK_SIZE;
             cord3.y += 1 * BLOCK_SIZE;
             int flag = 0;
-            int flag1 = 0;
+            int flag1 = 1;
             for (int i = 0; i < _pieces.size(); i++)
             {
                 if (cord == _pieces.at(i)->getCordinate())
@@ -194,10 +198,14 @@ namespace Chess
                 }
                 if ( clickedPiece->getCordinate(  ).y == BOARD_POSITION_Y + 1 * BLOCK_SIZE)
                 {
-                    if (!(cord3 == _pieces.at(i)->getCordinate()))
+                    if (cord3 == _pieces.at(i)->getCordinate())
                     {
-                        flag1 = 1;
+                        flag1 = 0;
                     }
+                }
+                else
+                {
+                    flag1 = 0;
                 }
                 if ((cord1 == _pieces.at(i)->getCordinate()) && _pieces.at(i)->isWhite())
                 {
