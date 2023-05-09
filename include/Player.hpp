@@ -13,11 +13,14 @@ namespace Chess
     public:
         Player( GameDataRef data, bool engine, bool isWhite );
 
-        Piece* pieceClicked( struct Cordinate cord );
+        Piece* pieceClickedWhite( struct Cordinate cord );
+        Piece* pieceClickedBlack( struct Cordinate cord );
         bool canMove( Cordinate cord );
         void removeMoves(  );
         void generateMoves( Piece* clickedPiece );
         std::vector<Cordinate>* getMoves(  );
+        bool isPieceAtWhite( Cordinate cord );
+        bool isPieceAtBlack( Cordinate cord );
 
         void Update(  );
         void Draw(  );
@@ -28,7 +31,10 @@ namespace Chess
 
         std::vector<Cordinate> _moves;
 
-
         void pawnMoves( Piece* clickedPiece );
+        void bishopMoves( Piece* clickedPiece );
+        void rookMoves( Piece* clickedPiece );
+        void KnightMoves( Piece* clickedPiece );
+        void kingMoves( Piece* clickedPiece );
     };
 }

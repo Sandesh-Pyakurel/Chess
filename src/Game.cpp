@@ -9,6 +9,8 @@ namespace Chess
 
         _data->machine.AddState( StateRef( new SplashState( this->_data ) ) );
 
+        _data->window.setFramerateLimit( FPS );
+
         this->Run(  );
 
     }

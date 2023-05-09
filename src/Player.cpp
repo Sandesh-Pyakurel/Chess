@@ -3,7 +3,7 @@
 namespace Chess
 {
     std::vector<Piece*> _pieces;
-
+    
     Player::Player(GameDataRef data, bool engine, bool isWhite) : _data(data), _engine(engine), _isWhite(isWhite)
     {
         if (isWhite)
@@ -42,13 +42,25 @@ namespace Chess
         }
     }
 
-    Piece *Player::pieceClicked(struct Cordinate cord)
+    Piece *Player::pieceClickedWhite(struct Cordinate cord)
     {
         for (int i = 0; i < _pieces.size(); i++)
         {
-            if ((_pieces.at(i)->getCordinate() == cord))
+            if ((_pieces.at(i)->getCordinate() == cord) && _pieces.at( i )->isWhite(  ) )
             {
                 return _pieces.at(i);
+            }
+        }
+        return nullptr;
+    }
+
+    Piece *Player::pieceClickedBlack( struct Cordinate cord )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            if ( ( _pieces.at( i )->getCordinate(  ) == cord ) && !_pieces.at( i )->isWhite(  ) )
+            {
+                return _pieces.at( i );
             }
         }
         return nullptr;
@@ -82,6 +94,34 @@ namespace Chess
         {
             pawnMoves( clickedPiece );
         }
+        else if ( clickedPiece->getPieceId(  ) == Pieces::Bishop )
+        {
+            bishopMoves( clickedPiece );
+        }
+    }
+
+    bool Player::isPieceAtWhite( Cordinate cord )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            if ( cord == _pieces.at( i )->getCordinate(  ) && _pieces.at( i )->isWhite(  ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Player::isPieceAtBlack( Cordinate cord )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            if ( cord == _pieces.at( i )->getCordinate(  ) && !_pieces.at( i )->isWhite(  ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     void Player::pawnMoves(Piece *clickedPiece)
@@ -169,6 +209,219 @@ namespace Chess
                 _moves.push_back(cord3);
             }
         }
+    }
+
+    void Player::bishopMoves( Piece* clickedPiece )
+    {
+        Cordinate cord = clickedPiece->getCordinate(  );
+        Cordinate cord1 = cord;
+
+        for ( int i = 1; i < 8 ; i++ )
+        {
+           cord1.y -= 1 * BLOCK_SIZE;
+           cord1.x += 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+
+            }
+        }
+        cord1 = cord;
+        for ( int i = 1; i < 8 ; i++ )
+        {
+           cord1.y -= 1 * BLOCK_SIZE;
+           cord1.x -= 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+
+            }
+        }
+        cord1 = cord;
+        for ( int i = 1; i < 8 ; i++ )
+        {
+           cord1.y += 1 * BLOCK_SIZE;
+           cord1.x += 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+
+            }
+        }
+        cord1 = cord;
+        for ( int i = 1; i < 8 ; i++ )
+        {
+           cord1.y += 1 * BLOCK_SIZE;
+           cord1.x -= 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    break;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                    break;
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                {
+                    break;
+                }
+                else 
+                {
+                    _moves.push_back( cord1 );
+                }
+
+            }
+        }
+    }
+
+    void Player::rookMoves( Piece* clickedPiece )
+    {
+
+    }
+
+    void Player::KnightMoves( Piece* clickedPiece )
+    {
+
+    }
+
+    void Player::kingMoves( Piece* clickedPiece )
+    {
+
     }
 
     void Player::Update()

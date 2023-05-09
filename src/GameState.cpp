@@ -71,9 +71,9 @@ namespace Chess
                             {
                                 if ( _player1->canMove( cord ) )
                                 {
-                                    if ( _player2->pieceClicked( cord ) )
+                                    if ( _player2->pieceClickedBlack( cord ) )
                                     {
-                                        _player2->pieceClicked( cord )->setCaptured(  ); // deleting if captured.
+                                        _player2->pieceClickedBlack( cord )->setCaptured(  ); // deleting if captured.
                                     }
 
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
@@ -94,9 +94,9 @@ namespace Chess
                             {
                                 if ( _player2->canMove( cord ) )
                                 {
-                                    if ( _player1->pieceClicked( cord ) )
+                                    if ( _player1->pieceClickedWhite( cord ) )
                                     {
-                                        _player1->pieceClicked( cord )->setCaptured(  );
+                                        _player1->pieceClickedWhite( cord )->setCaptured(  );
                                     }
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
                                     _clickedPiece = nullptr;
@@ -126,7 +126,7 @@ namespace Chess
                     {
                          if ( _isWhiteTurn )
                          {
-                             _clickedPiece = _player1->pieceClicked( cord );
+                             _clickedPiece = _player1->pieceClickedWhite( cord );
                             if ( _clickedPiece )
                             {
                                 _player1->generateMoves( _clickedPiece );
@@ -135,7 +135,7 @@ namespace Chess
                          }
                          else
                          {
-                             _clickedPiece = _player2->pieceClicked( cord );
+                             _clickedPiece = _player2->pieceClickedBlack( cord );
                             if ( _clickedPiece )
                             {
                                 _player2->generateMoves( _clickedPiece );
