@@ -2,8 +2,8 @@
 
 namespace Chess
 {
-    std::vector<Piece*> _pieces;
-    
+    std::vector<Piece *> _pieces;
+
     Player::Player(GameDataRef data, bool engine, bool isWhite) : _data(data), _engine(engine), _isWhite(isWhite)
     {
         if (isWhite)
@@ -46,7 +46,7 @@ namespace Chess
     {
         for (int i = 0; i < _pieces.size(); i++)
         {
-            if ((_pieces.at(i)->getCordinate() == cord) && _pieces.at( i )->isWhite(  ) )
+            if ((_pieces.at(i)->getCordinate() == cord) && _pieces.at(i)->isWhite())
             {
                 return _pieces.at(i);
             }
@@ -54,13 +54,13 @@ namespace Chess
         return nullptr;
     }
 
-    Piece *Player::pieceClickedBlack( struct Cordinate cord )
+    Piece *Player::pieceClickedBlack(struct Cordinate cord)
     {
-        for ( int i = 0; i < _pieces.size(  ); i++ )
+        for (int i = 0; i < _pieces.size(); i++)
         {
-            if ( ( _pieces.at( i )->getCordinate(  ) == cord ) && !_pieces.at( i )->isWhite(  ) )
+            if ((_pieces.at(i)->getCordinate() == cord) && !_pieces.at(i)->isWhite())
             {
-                return _pieces.at( i );
+                return _pieces.at(i);
             }
         }
         return nullptr;
@@ -78,7 +78,7 @@ namespace Chess
         return false;
     }
 
-    std::vector<Cordinate>* Player::getMoves(  )
+    std::vector<Cordinate> *Player::getMoves()
     {
         return &_moves;
     }
@@ -92,28 +92,36 @@ namespace Chess
     {
         if (clickedPiece->getPieceId() == Pieces::Pawn)
         {
-            pawnMoves( clickedPiece );
+            pawnMoves(clickedPiece);
         }
-        else if ( clickedPiece->getPieceId(  ) == Pieces::Bishop )
+        else if (clickedPiece->getPieceId() == Pieces::Bishop)
         {
-            bishopMoves( clickedPiece );
+            bishopMoves(clickedPiece);
         }
-        else if ( clickedPiece->getPieceId(  ) == Pieces::Rook )
+        else if (clickedPiece->getPieceId() == Pieces::Rook)
         {
-            rookMoves( clickedPiece );
+            rookMoves(clickedPiece);
         }
-        else if ( clickedPiece->getPieceId(  ) == Pieces::Queen )
+        else if (clickedPiece->getPieceId() == Pieces::Queen)
         {
-            bishopMoves( clickedPiece );
-            rookMoves( clickedPiece );
+            bishopMoves(clickedPiece);
+            rookMoves(clickedPiece);
+        }
+        else if ( clickedPiece->getPieceId(  ) == Pieces::Knight )
+        {
+            KnightMoves( clickedPiece );
+        }
+        else if ( clickedPiece->getPieceId( ) == Pieces::King )
+        {
+            kingMoves( clickedPiece );
         }
     }
 
-    bool Player::isPieceAtWhite( Cordinate cord )
+    bool Player::isPieceAtWhite(Cordinate cord)
     {
-        for ( int i = 0; i < _pieces.size(  ); i++ )
+        for (int i = 0; i < _pieces.size(); i++)
         {
-            if ( cord == _pieces.at( i )->getCordinate(  ) && _pieces.at( i )->isWhite(  ) )
+            if (cord == _pieces.at(i)->getCordinate() && _pieces.at(i)->isWhite())
             {
                 return true;
             }
@@ -121,11 +129,11 @@ namespace Chess
         return false;
     }
 
-    bool Player::isPieceAtBlack( Cordinate cord )
+    bool Player::isPieceAtBlack(Cordinate cord)
     {
-        for ( int i = 0; i < _pieces.size(  ); i++ )
+        for (int i = 0; i < _pieces.size(); i++)
         {
-            if ( cord == _pieces.at( i )->getCordinate(  ) && !_pieces.at( i )->isWhite(  ) )
+            if (cord == _pieces.at(i)->getCordinate() && !_pieces.at(i)->isWhite())
             {
                 return true;
             }
@@ -151,7 +159,7 @@ namespace Chess
                 {
                     flag = 1;
                 }
-                if ( clickedPiece->getCordinate().y == BOARD_POSITION_Y + 6 * BLOCK_SIZE)
+                if (clickedPiece->getCordinate().y == BOARD_POSITION_Y + 6 * BLOCK_SIZE)
                 {
                     if (cord3 == _pieces.at(i)->getCordinate())
                     {
@@ -196,7 +204,7 @@ namespace Chess
                 {
                     flag = 1;
                 }
-                if ( clickedPiece->getCordinate(  ).y == BOARD_POSITION_Y + 1 * BLOCK_SIZE)
+                if (clickedPiece->getCordinate().y == BOARD_POSITION_Y + 1 * BLOCK_SIZE)
                 {
                     if (cord3 == _pieces.at(i)->getCordinate())
                     {
@@ -227,406 +235,716 @@ namespace Chess
         }
     }
 
-    void Player::bishopMoves( Piece* clickedPiece )
+    void Player::bishopMoves(Piece *clickedPiece)
     {
-        Cordinate cord = clickedPiece->getCordinate(  );
+        Cordinate cord = clickedPiece->getCordinate();
         Cordinate cord1 = cord;
 
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y -= 1 * BLOCK_SIZE;
-           cord1.x += 1 * BLOCK_SIZE;
+            cord1.y -= 1 * BLOCK_SIZE;
+            cord1.x += 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y -= 1 * BLOCK_SIZE;
-           cord1.x -= 1 * BLOCK_SIZE;
+            cord1.y -= 1 * BLOCK_SIZE;
+            cord1.x -= 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y )
+                else if (cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y )
+                else if (cord1.x < BOARD_POSITION_X || cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y += 1 * BLOCK_SIZE;
-           cord1.x += 1 * BLOCK_SIZE;
+            cord1.y += 1 * BLOCK_SIZE;
+            cord1.x += 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y += 1 * BLOCK_SIZE;
-           cord1.x -= 1 * BLOCK_SIZE;
+            cord1.y += 1 * BLOCK_SIZE;
+            cord1.x -= 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.x < BOARD_POSITION_X || cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
     }
 
-    void Player::rookMoves( Piece* clickedPiece )
+    void Player::rookMoves(Piece *clickedPiece)
     {
-        Cordinate cord = clickedPiece->getCordinate(  );
+        Cordinate cord = clickedPiece->getCordinate();
         Cordinate cord1 = cord;
 
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y -= 1 * BLOCK_SIZE;
+            cord1.y -= 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.y < BOARD_POSITION_Y )
+                else if (cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.y < BOARD_POSITION_Y )
+                else if (cord1.y < BOARD_POSITION_Y)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.y += 1 * BLOCK_SIZE;
+            cord1.y += 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE )
+                else if (cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.x += 1 * BLOCK_SIZE;
+            cord1.x += 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                else if (cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
         cord1 = cord;
-        for ( int i = 1; i < 8 ; i++ )
+        for (int i = 1; i < 8; i++)
         {
-           cord1.x -= 1 * BLOCK_SIZE;
+            cord1.x -= 1 * BLOCK_SIZE;
 
-            if ( _isWhite )
+            if (_isWhite)
             {
-                if ( isPieceAtWhite( cord1 ) )
+                if (isPieceAtWhite(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtBlack( cord1 ) )
+                else if (isPieceAtBlack(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X )
+                else if (cord1.x < BOARD_POSITION_X)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
             }
             else
             {
-                if ( isPieceAtBlack( cord1 ) )
+                if (isPieceAtBlack(cord1))
                 {
                     break;
                 }
-                else if ( isPieceAtWhite( cord1 ) )
+                else if (isPieceAtWhite(cord1))
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                     break;
                 }
-                else if ( cord1.x < BOARD_POSITION_X )
+                else if (cord1.x < BOARD_POSITION_X)
                 {
                     break;
                 }
-                else 
+                else
                 {
-                    _moves.push_back( cord1 );
+                    _moves.push_back(cord1);
                 }
-
             }
         }
     }
 
-    void Player::KnightMoves( Piece* clickedPiece )
+    void Player::KnightMoves(Piece *clickedPiece)
     {
+        Cordinate cord = clickedPiece->getCordinate();
+        Cordinate cord1 = cord, cord2 = cord;
 
+        cord1.y -= 2 * BLOCK_SIZE;
+        cord1.x -= 1 * BLOCK_SIZE;
+
+        cord2.y -= 2 * BLOCK_SIZE;
+        cord2.x += 1 * BLOCK_SIZE;
+
+        if (_isWhite)
+        {
+            if (isPieceAtBlack(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtWhite( cord1 ) && !( cord1.y < BOARD_POSITION_Y) && !(cord1.x < BOARD_POSITION_X) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtBlack(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtWhite( cord2 ) && !( cord2.y < BOARD_POSITION_Y) && !(cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+        else
+        {
+            if (isPieceAtWhite(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtBlack( cord1 ) && !( cord1.y < BOARD_POSITION_Y) && !(cord1.x < BOARD_POSITION_X) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtWhite(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtBlack( cord2 ) && !( cord2.y < BOARD_POSITION_Y) && !(cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+
+        cord1.y += 4 * BLOCK_SIZE;
+        cord2.y += 4 * BLOCK_SIZE;
+
+        if (_isWhite)
+        {
+            if (isPieceAtBlack(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtWhite( cord1 ) && !( cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) && !(cord1.x < BOARD_POSITION_X) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtBlack(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtWhite( cord2 ) && !( cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) && !(cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+        else
+        {
+            if (isPieceAtWhite(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtBlack( cord1 ) && !( cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) && !(cord1.x < BOARD_POSITION_X) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtWhite(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtBlack( cord2 ) && !( cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) && !(cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+
+        cord1.y -= 3 * BLOCK_SIZE;
+        cord2.y -= 1 * BLOCK_SIZE;
+
+        cord1.x  += 3 * BLOCK_SIZE;
+        cord2.x += 1 * BLOCK_SIZE;
+
+        if (_isWhite)
+        {
+            if (isPieceAtBlack(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtWhite( cord1 ) && !( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) && !(cord1.y < BOARD_POSITION_Y) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtBlack(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtWhite( cord2 ) && !( cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) && !(cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+        else
+        {
+            if (isPieceAtWhite(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtBlack( cord1 ) && !( cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) && !(cord1.y < BOARD_POSITION_Y) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtWhite(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtBlack( cord2 ) && !( cord2.x > BOARD_POSITION_X + 7 * BLOCK_SIZE) && !(cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+
+        cord1.x -= 4 * BLOCK_SIZE;
+        cord2.x -= 4 * BLOCK_SIZE;
+
+        if (_isWhite)
+        {
+            if (isPieceAtBlack(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtWhite( cord1 ) && !( cord1.x < BOARD_POSITION_X ) && !(cord1.y < BOARD_POSITION_Y) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtBlack(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtWhite( cord2 ) && !( cord2.x < BOARD_POSITION_X ) && !(cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
+        else
+        {
+            if (isPieceAtWhite(cord1))
+            {
+                _moves.push_back(cord1);
+            }
+            else if (!isPieceAtBlack( cord1 ) && !( cord1.x < BOARD_POSITION_X ) && !(cord1.y < BOARD_POSITION_Y) )
+            {
+                _moves.push_back(cord1);
+            }
+            if (isPieceAtWhite(cord2))
+            {
+                _moves.push_back(cord2);
+            }
+            else if (!isPieceAtBlack( cord2 ) && !( cord2.x < BOARD_POSITION_X)  && !(cord2.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE) )
+            {
+                _moves.push_back(cord2);
+            }
+        }
     }
 
-    void Player::kingMoves( Piece* clickedPiece )
+    void Player::kingMoves(Piece *clickedPiece)
     {
+        Cordinate cord = clickedPiece->getCordinate( );
 
+        Cordinate cord1 = cord;
+
+        cord1.y -= 1 * BLOCK_SIZE;
+        cord1.x -= 2 * BLOCK_SIZE;
+
+        for ( int i = 0; i < 3; i++ )
+        {
+            cord1.x += 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.y < BOARD_POSITION_Y || cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.y < BOARD_POSITION_Y || cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+        }
+
+        cord1.y += 2 * BLOCK_SIZE;
+        cord1.x -= 3 * BLOCK_SIZE;
+
+        for ( int i = 0; i < 3; i++ )
+        {
+            cord1.x += 1 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.y > BOARD_POSITION_Y + 7 * BLOCK_SIZE || cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.y < BOARD_POSITION_Y || cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+        }
+
+        cord1.y -= 1 * BLOCK_SIZE;
+        cord1.x -= 4 * BLOCK_SIZE;
+
+        for ( int i = 0; i < 2; i++ )
+        {
+            cord1.x += 2 * BLOCK_SIZE;
+
+            if ( _isWhite )
+            {
+                if ( isPieceAtWhite( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtBlack( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+            else
+            {
+                if ( isPieceAtBlack( cord1 ) )
+                {
+                    continue;
+                }
+                else if ( isPieceAtWhite( cord1 ) )
+                {
+                    _moves.push_back( cord1 );
+                }
+                else if ( cord1.x < BOARD_POSITION_X || cord1.x > BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                {
+                    continue;
+                }
+                else
+                {
+                    _moves.push_back( cord1 );
+                }
+            }
+        }
     }
 
     void Player::Update()
