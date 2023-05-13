@@ -30,6 +30,11 @@ namespace Chess
         this->_isCaptured = true;
     }
 
+    void Piece::setUnCaputred( )
+    {
+        this->_isCaptured = false;
+    }
+
     int Piece::getPieceId(  )
     {
         return _pieceId; 

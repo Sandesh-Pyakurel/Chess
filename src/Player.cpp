@@ -40,6 +40,9 @@ namespace Chess
                 _pieces.push_back(new Piece(_data, Pieces::Pawn, false, "Black Pawn", BOARD_POSITION_X + i * BLOCK_SIZE, BOARD_POSITION_Y + 1 * BLOCK_SIZE));
             }
         }
+
+        _removeCaptured = true;
+        _tempPiece = nullptr;
     }
 
     Piece *Player::pieceClickedWhite(struct Cordinate cord)
@@ -86,6 +89,87 @@ namespace Chess
     void Player::removeMoves()
     {
         _moves.clear();
+    }
+
+    void Player::setIsWhite( )
+    {
+        if ( _isWhite )
+            _isWhite = false;
+        else
+            _isWhite = true;
+    }
+
+    void Player::removePiece( Piece* piece )
+    {
+        for ( int i = 0; i < _pieces.size(  ); i++ )
+        {
+            if ( _pieces.at( i ) == piece )
+            {
+                _tempPiece = _pieces.at( i );
+                _pieces.erase( _pieces.begin(  ) + i );
+            }
+        }
+    }
+
+    void Player::restorePiece(  )
+    {
+        _pieces.push_back( _tempPiece );
+        _tempPiece = nullptr;
+    }
+
+    void Player::filterLegalMoves( Piece* clickedPiece )
+    {
+        for ( int i = 0; i < _moves.size( );i++ )
+        {
+            _tempmoves.push_back( _moves.at( i ) );
+        }
+        removeMoves();
+        
+        Cordinate tempcord = clickedPiece->getCordinate(  );
+
+        _removeCaptured = false;
+
+        for ( int i = 0; i < _tempmoves.size( ); i++ )
+        {
+            Piece* temppiece = nullptr;
+            if ( isPieceAtBlack(_tempmoves.at(i)))
+            {
+                temppiece = pieceClickedBlack( _tempmoves.at(i));
+                temppiece->setCaptured( );
+                removePiece( temppiece );
+            }
+            else if ( isPieceAtWhite(_tempmoves.at(i)))
+            {
+                temppiece = pieceClickedWhite( _tempmoves.at(i));
+                temppiece->setCaptured( );
+                removePiece( temppiece );
+            }
+
+            clickedPiece->setCordinate( _tempmoves.at( i ) );
+            Cordinate kingcord = getKingPosition(  );
+
+            if ( isAtCheck( kingcord ) )
+            {
+                _tempmoves.erase( _tempmoves.begin( ) + i );
+                i--;
+            }
+            if ( temppiece )
+            {
+                temppiece->setUnCaputred( );
+                restorePiece(  );
+            }
+        }
+        clickedPiece->setCordinate( tempcord );
+        
+        removeMoves( );
+
+        _removeCaptured = true;
+
+        for ( int i = 0; i < _tempmoves.size( );i++ )
+        {
+            _moves.push_back( _tempmoves.at( i ) );
+        }
+        _tempmoves.clear( );
     }
 
     void Player::generateMoves(Piece *clickedPiece)
@@ -139,6 +223,17 @@ namespace Chess
             }
         }
         return false;
+    }
+
+    Cordinate Player::getKingPosition( )
+    {
+        for ( int i = 0; i < _pieces.size( ); i++ )
+        {
+            if ( _pieces.at( i)->getPieceId( ) == Pieces::King && _pieces.at( i )->isWhite( ) == _isWhite )
+            {
+                return _pieces.at( i)->getCordinate( );
+            }
+        }
     }
 
     void Player::pawnMoves(Piece *clickedPiece)
@@ -947,15 +1042,72 @@ namespace Chess
         }
     }
 
+    bool Player::isAtCheck( Cordinate kingcord )
+    {
+        if ( _isWhite )
+        {
+            setIsWhite( );
+            for ( int i = 0; i < _pieces.size(  ); i++ )
+            {
+                if ( !_pieces.at( i )->isWhite(  ) )
+                {
+                    generateMoves( _pieces.at( i ));
+                    for ( int i = 0; i < _moves.size( ); i++ )
+                    {
+                        
+                        if ( kingcord == _moves.at( i ) )
+                        {
+                            removeMoves( );
+                            setIsWhite( );
+                            return true;
+                        }
+                    }
+                    removeMoves( );
+                }
+            }
+            removeMoves( );
+            setIsWhite( );
+            return false;
+        }
+        else
+        {
+            setIsWhite( );
+            for ( int i = 0; i < _pieces.size(  ); i++ )
+            {
+                if ( _pieces.at( i )->isWhite(  ) )
+                {
+                    generateMoves( _pieces.at( i ));
+
+                    for ( int i = 0; i < _moves.size( ); i++ )
+                    {
+                        if ( kingcord == _moves.at( i ) )
+                        {
+                            removeMoves( );
+                            setIsWhite( );
+                            return true;
+                        }
+                    }
+                    removeMoves( );
+                }
+            }
+            removeMoves( );
+            setIsWhite( );
+            return false;
+        }
+    }
+
     void Player::Update()
     {
         for (int i = 0; i < _pieces.size(); i++)
         {
             _pieces.at(i)->Update();
 
-            if (_pieces.at(i)->isCaptured())
+            if ( _removeCaptured )
+            {
+                if (_pieces.at(i)->isCaptured())
             {
                 _pieces.erase(_pieces.begin() + i);
+            }
             }
         }
     }

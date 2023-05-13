@@ -130,6 +130,7 @@ namespace Chess
                             if ( _clickedPiece )
                             {
                                 _player1->generateMoves( _clickedPiece );
+                                _player1->filterLegalMoves( _clickedPiece );
                                 _board->highlight( _player1->getMoves(  ) ); 
                             }
                          }
@@ -139,6 +140,7 @@ namespace Chess
                             if ( _clickedPiece )
                             {
                                 _player2->generateMoves( _clickedPiece );
+                                _player2->filterLegalMoves( _clickedPiece );
                                 _board->highlight( _player2->getMoves(  ) );
                             }
                          }
