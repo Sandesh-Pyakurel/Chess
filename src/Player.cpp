@@ -45,6 +45,7 @@ namespace Chess
         _tempPiece = nullptr;
     }
 
+    // To get clicked piece's pointer if it is white.
     Piece *Player::pieceClickedWhite(struct Cordinate cord)
     {
         for (int i = 0; i < _pieces.size(); i++)
@@ -57,6 +58,7 @@ namespace Chess
         return nullptr;
     }
 
+    // To get clicked piece's pointer if it is white.
     Piece *Player::pieceClickedBlack(struct Cordinate cord)
     {
         for (int i = 0; i < _pieces.size(); i++)
@@ -69,6 +71,7 @@ namespace Chess
         return nullptr;
     }
 
+    // To check if user's input move is possible.
     bool Player::canMove(Cordinate cord)
     {
         for (int i = 0; i < _moves.size(); i++)
@@ -81,16 +84,19 @@ namespace Chess
         return false;
     }
 
+    // To get moves available for the clicked piece.
     std::vector<Cordinate> *Player::getMoves()
     {
         return &_moves;
     }
 
+    // To remove all the moves.
     void Player::removeMoves()
     {
         _moves.clear();
     }
 
+    // Helper function for simulating moves looking for check.
     void Player::setIsWhite( )
     {
         if ( _isWhite )
@@ -99,6 +105,7 @@ namespace Chess
             _isWhite = true;
     }
 
+    // Helper function for simulating moves looking for check.
     void Player::removePiece( Piece* piece )
     {
         for ( int i = 0; i < _pieces.size(  ); i++ )
@@ -111,12 +118,14 @@ namespace Chess
         }
     }
 
+    // Helper function for simulating moves looking for check.
     void Player::restorePiece(  )
     {
         _pieces.push_back( _tempPiece );
         _tempPiece = nullptr;
     }
 
+    // To remove moves that causes check on own's king.
     void Player::filterLegalMoves( Piece* clickedPiece )
     {
         for ( int i = 0; i < _moves.size( );i++ )
@@ -172,6 +181,7 @@ namespace Chess
         _tempmoves.clear( );
     }
 
+    // To generate pseudolegal moves according to clicked piece.
     void Player::generateMoves(Piece *clickedPiece)
     {
         if (clickedPiece->getPieceId() == Pieces::Pawn)
@@ -201,6 +211,7 @@ namespace Chess
         }
     }
 
+    // To check if there is white piece at the given cordinate.
     bool Player::isPieceAtWhite(Cordinate cord)
     {
         for (int i = 0; i < _pieces.size(); i++)
@@ -213,6 +224,7 @@ namespace Chess
         return false;
     }
 
+    // To check if there is black piece at the given cordinate.
     bool Player::isPieceAtBlack(Cordinate cord)
     {
         for (int i = 0; i < _pieces.size(); i++)
@@ -225,6 +237,7 @@ namespace Chess
         return false;
     }
 
+    // To get king's cordinate to look for check.
     Cordinate Player::getKingPosition( )
     {
         for ( int i = 0; i < _pieces.size( ); i++ )
@@ -236,6 +249,7 @@ namespace Chess
         }
     }
 
+    // Function to generate pseudolegal moves for pawn.
     void Player::pawnMoves(Piece *clickedPiece)
     {
         if (_isWhite)
@@ -330,6 +344,7 @@ namespace Chess
         }
     }
 
+    // Function to generate pseudolegal moves for bishop.
     void Player::bishopMoves(Piece *clickedPiece)
     {
         Cordinate cord = clickedPiece->getCordinate();
@@ -524,6 +539,7 @@ namespace Chess
         }
     }
 
+    // Function to generate pseudolegal moves for rook.
     void Player::rookMoves(Piece *clickedPiece)
     {
         Cordinate cord = clickedPiece->getCordinate();
@@ -714,6 +730,7 @@ namespace Chess
         }
     }
 
+    // Function to generate pseudolegal moves for knight.
     void Player::KnightMoves(Piece *clickedPiece)
     {
         Cordinate cord = clickedPiece->getCordinate();
@@ -894,6 +911,7 @@ namespace Chess
         }
     }
 
+    // Function to generate pseudolegal moves for king.
     void Player::kingMoves(Piece *clickedPiece)
     {
         Cordinate cord = clickedPiece->getCordinate( );
@@ -1042,6 +1060,7 @@ namespace Chess
         }
     }
 
+    // Function to check weather king is at check at current position.
     bool Player::isAtCheck( Cordinate kingcord )
     {
         if ( _isWhite )
@@ -1096,6 +1115,7 @@ namespace Chess
         }
     }
 
+    // Function to update the player.
     void Player::Update()
     {
         for (int i = 0; i < _pieces.size(); i++)
