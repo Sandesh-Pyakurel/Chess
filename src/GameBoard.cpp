@@ -32,7 +32,51 @@ namespace Chess
             ret.setFillColor( sf::Color{ 240, 0, 0, 90 } );
             _highlights[i] = ret;
         }       
+
+        _wpromotionPieces[0].setTexture(_data->assets.GetTexture("White Queen"));
+        _wpromotionPieces[1].setTexture(_data->assets.GetTexture("White Rook"));
+        _wpromotionPieces[2].setTexture(_data->assets.GetTexture("White Bishop"));
+        _wpromotionPieces[3].setTexture(_data->assets.GetTexture("White Knight"));
+
+        for (int i = 0; i < 4; i++)
+        {
+            sf::RectangleShape ret;
+            ret.setSize( sf::Vector2f( 0.6 * BLOCK_SIZE, 0.6 * BLOCK_SIZE));
+            ret.setFillColor( sf::Color(240, 222, 232));
+            ret.setPosition(sf::Vector2f(BOARD_POSITION_X + (8 * BLOCK_SIZE - 4 * 0.6 * BLOCK_SIZE) / 2 + i * 0.6 * BLOCK_SIZE, BOARD_POSITION_Y - ret.getGlobalBounds().height * 1.2));
+            _wpromotionPieces[i].setPosition(sf::Vector2f(BOARD_POSITION_X + (8 * BLOCK_SIZE - 4 * 0.6 * BLOCK_SIZE) / 2 + i * 0.6 * BLOCK_SIZE, BOARD_POSITION_Y - ret.getGlobalBounds().height * 1.2));
+            _wpromotionPieces[i].scale(sf::Vector2f(0.6, 0.6));
+            _whitePromotion[i] = ret;
+        }
+
+        _bpromotionPieces[0].setTexture(_data->assets.GetTexture("Black Queen"));
+        _bpromotionPieces[1].setTexture(_data->assets.GetTexture("Black Rook"));
+        _bpromotionPieces[2].setTexture(_data->assets.GetTexture("Black Bishop"));
+        _bpromotionPieces[3].setTexture(_data->assets.GetTexture("Black Knight"));
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            sf::RectangleShape ret;
+            ret.setSize( sf::Vector2f( 0.6 * BLOCK_SIZE, 0.6 * BLOCK_SIZE));
+            ret.setFillColor( sf::Color(240, 222, 232));
+            ret.setPosition(sf::Vector2f(BOARD_POSITION_X + (8 * BLOCK_SIZE - 4 * 0.6 * BLOCK_SIZE) / 2 + i * 0.6 * BLOCK_SIZE, BOARD_POSITION_Y + 8 * BLOCK_SIZE + ret.getGlobalBounds().height * 0.2));
+            _bpromotionPieces[i].setPosition(sf::Vector2f(BOARD_POSITION_X + (8 * BLOCK_SIZE - 4 * 0.6 * BLOCK_SIZE) / 2 + i * 0.6 * BLOCK_SIZE, BOARD_POSITION_Y + 8 * BLOCK_SIZE + ret.getGlobalBounds().height * 0.2));
+            _bpromotionPieces[i].scale(sf::Vector2f(0.6, 0.6));
+            _blackPromotion[i] = ret;
+        }
+ 
     }
+    
+    void GameBoard::compBlackProm()
+    {
+        this->_isBlackProm = !_isBlackProm;
+    }
+    void GameBoard::compWhiteProm()
+    {
+        this->_isWhiteProm = !_isWhiteProm;
+    }
+
 
     void GameBoard::highlight( std::vector<Cordinate>* moves )
     {
@@ -67,5 +111,23 @@ namespace Chess
         {
             _data->window.draw( _highlights[i] );
         }
+
+        if (_isWhiteProm)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                _data->window.draw(_whitePromotion[i]);
+                _data->window.draw(_wpromotionPieces[i]);
+            }
+        }
+        if (_isBlackProm)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                _data->window.draw(_blackPromotion[i]);
+                _data->window.draw(_bpromotionPieces[i]);
+            }
+        }
+ 
     }
 }

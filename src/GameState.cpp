@@ -11,8 +11,6 @@ namespace Chess
     void GameState::Init(  )
     {
         // Initializing assets required for gamestate.
-        
-        _board = std::make_unique<GameBoard>( _data ); 
 
         this->_data->assets.LoadTexture( "Black Pawn", BLACK_PAWN_FILEPATH );
         this->_data->assets.LoadTexture( "Black Rook", BLACK_ROOK_FILEPATH );
@@ -32,6 +30,7 @@ namespace Chess
         _player1 = std::make_unique<Player>( _data, false, true ); 
         _player2 = std::make_unique<Player>( _data, false, false );
 
+        _board = std::make_unique<GameBoard>( _data ); 
     }
 
     void GameState::HandleInput(  )
