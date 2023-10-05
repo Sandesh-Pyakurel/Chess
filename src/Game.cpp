@@ -3,6 +3,7 @@
 
 namespace Chess
 {
+    // Window is created, inital state is added and main game loop is entered.
     Game::Game( int width, int height, std::string title )
     {
         _data->window.create( sf::VideoMode( width, height ), title, sf::Style::Close | sf::Style::Titlebar );
@@ -15,6 +16,7 @@ namespace Chess
 
     }
 
+    // Main game loop, here state changes are processed, handleinput, update and draw of the active state is performed.
     void Game::Run(  )
     {
         while( this->_data->window.isOpen(  ) )
@@ -27,5 +29,4 @@ namespace Chess
             this->_data->machine.GetActiveState(  )->Draw(  ); 
         }
     }
-
 }

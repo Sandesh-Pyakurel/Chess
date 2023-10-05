@@ -16,8 +16,8 @@ namespace Chess
         GameBoard( GameDataRef data );
         void highlight( std::vector<Cordinate>* moves );
         void removeHighlight(  );
-        void compBlackProm();
-        void compWhiteProm();
+        void compBlackProm(); // complement _isBlackProm variable.
+        void compWhiteProm(); // complement _isWhiteProm variable.
 
         void Update(  );
         void DrawBoard(  );
@@ -26,8 +26,8 @@ namespace Chess
         GameDataRef _data;
         int _highsize;
 
-        bool _isBlackProm = false;
-        bool _isWhiteProm = false;
+        bool _isBlackProm = false; // it indicates if game is in promotion state for black.
+        bool _isWhiteProm = false; // it indicates if game is in promotion state for black.
 
         sf::RectangleShape _boxes[8][8];
         sf::RectangleShape _highlights[28]; 

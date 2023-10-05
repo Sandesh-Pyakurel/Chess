@@ -2,7 +2,7 @@
 #include "Game.hpp"
 #include "DEFINITIONS.hpp"
 
-int main(  )
+int main( )
 {
     Chess::Game( SCREEN_WIDTH, SCREEN_HEIGHT, "Chess" );
     return EXIT_SUCCESS; 
