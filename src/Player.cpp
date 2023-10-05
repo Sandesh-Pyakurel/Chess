@@ -257,22 +257,22 @@ namespace Chess
             Cordinate cord = clickedPiece->getCordinate();
             cord.y -= 1 * BLOCK_SIZE;
             Cordinate cord1 = cord, cord2 = cord, cord3 = cord;
-            cord1.x += 1 * BLOCK_SIZE;
-            cord2.x -= 1 * BLOCK_SIZE;
-            cord3.y -= 1 * BLOCK_SIZE;
+            cord1.x += 1 * BLOCK_SIZE; // it store the capturing position in right side.
+            cord2.x -= 1 * BLOCK_SIZE; // it store the capturing position in left side.
+            cord3.y -= 1 * BLOCK_SIZE; // it stors the position for two block movement if it is first move of the pawn.
             int flag = 0;
             int flag1 = 1;
             for (int i = 0; i < _pieces.size(); i++)
             {
                 if (cord == _pieces.at(i)->getCordinate())
                 {
-                    flag = 1;
+                    flag = 1; // flag = 1 represents there is same color piece in the one block forward.
                 }
                 if (clickedPiece->getCordinate().y == BOARD_POSITION_Y + 6 * BLOCK_SIZE)
                 {
-                    if (cord3 == _pieces.at(i)->getCordinate())
+                    if (cord3 == _pieces.at(i)->getCordinate() ||cord == _pieces.at(i)->getCordinate())
                     {
-                        flag1 = 0;
+                        flag1 = 0; // flag1 = 0 means two block movement is not possible.
                     }
                 }
                 else
@@ -315,7 +315,7 @@ namespace Chess
                 }
                 if (clickedPiece->getCordinate().y == BOARD_POSITION_Y + 1 * BLOCK_SIZE)
                 {
-                    if (cord3 == _pieces.at(i)->getCordinate())
+                    if (cord3 == _pieces.at(i)->getCordinate() || cord == _pieces.at(i)->getCordinate())
                     {
                         flag1 = 0;
                     }
