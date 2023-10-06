@@ -225,11 +225,97 @@ namespace Chess
 
         _removeCaptured = true;
 
+        // check for castling move.
+        Cordinate cord1, cord2, cord3;
+        cord1.x = BOARD_POSITION_X + 1 * BLOCK_SIZE;
+        cord1.y = BOARD_POSITION_Y + 7 * BLOCK_SIZE;
+
+        cord3 = cord1;
+        cord3.x += 2 * BLOCK_SIZE;
+        cord2 = cord1;
+        cord2.x += BLOCK_SIZE;
+
+
+        if ( clickedPiece->getPieceId() == Pieces::King )
+        {
+            if ( _isWhite )
+            {
+                if ( _castleLeftPotential )
+                {
+                    if ( !(isPieceAtBlack(cord1) || isPieceAtWhite(cord1)) && !(isPieceAtBlack(cord2) || isPieceAtWhite(cord2)) && !(isPieceAtBlack(cord3) || isPieceAtWhite(cord3)) )
+                    {
+                        if ( !isAtCheck(cord1) && !isAtCheck(cord2) && !isAtCheck(cord3) )
+                        {
+                            _tempmoves.push_back( cord2 );
+                            _castleLeftNow = true;
+                        }
+                    }
+                }
+
+                if ( _castleRightPotential )
+                {
+
+                    cord1.x += 4 * BLOCK_SIZE;
+                    cord2.x += 4 * BLOCK_SIZE;
+
+                    if ( !(isPieceAtBlack(cord1) || isPieceAtWhite(cord1)) && !(isPieceAtBlack(cord2) || isPieceAtWhite(cord2)) )
+                    {
+                        if ( !isAtCheck(cord1) && !isAtCheck(cord2) )
+                        {
+                            _tempmoves.push_back( cord2 );
+                            _castleRightNow = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                cord1.x = BOARD_POSITION_X + 1 * BLOCK_SIZE;
+                cord1.y = BOARD_POSITION_Y; 
+
+                cord3 = cord1;
+                cord3.x += 2 * BLOCK_SIZE;
+                cord2 = cord1;
+                cord2.x += BLOCK_SIZE;
+
+                if ( _castleLeftPotential )
+                {
+                    if ( !(isPieceAtBlack(cord1) || isPieceAtWhite(cord1)) && !(isPieceAtBlack(cord2) || isPieceAtWhite(cord2)) && !(isPieceAtBlack(cord3) || isPieceAtWhite(cord3)) )
+                    {
+                        if ( !isAtCheck(cord1) && !isAtCheck(cord2) && !isAtCheck(cord3) )
+                        {
+                            _tempmoves.push_back( cord2 );
+                            _castleLeftNow = true;
+                        }
+                    }
+                }
+
+                if ( _castleRightPotential )
+                {
+
+                    cord1.x += 4 * BLOCK_SIZE;
+                    cord2.x += 4 * BLOCK_SIZE;
+
+                    if ( !(isPieceAtBlack(cord1) || isPieceAtWhite(cord1)) && !(isPieceAtBlack(cord2) || isPieceAtWhite(cord2)) )
+                    {
+                        if ( !isAtCheck(cord1) && !isAtCheck(cord2) )
+                        {
+                            _tempmoves.push_back( cord2 );
+                            _castleRightNow = true;
+                        }
+                    }
+                }
+            }
+ 
+        }
+
         for ( int i = 0; i < _tempmoves.size( );i++ )
         {
             _moves.push_back( _tempmoves.at( i ) );
         }
         _tempmoves.clear( );
+
+
     }
 
     // To generate pseudolegal moves according to clicked piece.
@@ -1176,9 +1262,84 @@ namespace Chess
             if ( _removeCaptured )
             {
                 if (_pieces.at(i)->isCaptured())
-            {
-                _pieces.erase(_pieces.begin() + i);
+                {
+                    _pieces.erase(_pieces.begin() + i);
+                }
             }
+        }
+        if ( _lastMovedPiece != nullptr )
+        {
+
+            if ( _lastMovedPiece->getPieceId() == Pieces::King && ( _castleLeftPotential && _castleRightPotential ) )
+            {
+                _castleLeftPotential = false;
+                _castleRightPotential = false;
+            }
+
+            if ( _lastMovedPiece->getPieceId() == Pieces::Rook )
+            {
+                if ( _lastMovedPiece->getCordinate( ).x == BOARD_POSITION_X && _castleLeftPotential )
+                {
+                    _castleLeftPotential = false;
+                } 
+                if ( _lastMovedPiece->getCordinate().x == BOARD_POSITION_X + 7 * BLOCK_SIZE && _castleRightPotential )
+                {
+                    _castleRightPotential = false;
+                }
+            }
+        }
+
+        Cordinate cord, cord1;
+        cord.x = BOARD_POSITION_X;
+        cord.y = BOARD_POSITION_Y + 7 * BLOCK_SIZE;
+        cord1 = cord;
+        cord1.x += 3 * BLOCK_SIZE;
+        if ( _isWhite )
+        {
+            if ( _castleLeftNow && _lastMovedPiece->getPieceId() == Pieces::King && kingCastle.x == BOARD_POSITION_X + 2 * BLOCK_SIZE )
+            {
+                pieceClickedWhite(cord)->setCordinate(cord1);
+                _castleLeftNow = false;
+                _castleRightNow = false;
+                _castleLeftPotential = false;
+                _castleRightPotential = false;
+            }
+            else if ( _castleRightNow && _lastMovedPiece->getPieceId() == Pieces::King && kingCastle.x == BOARD_POSITION_X + 6 * BLOCK_SIZE )
+            {
+                cord.x += 7 * BLOCK_SIZE;
+                cord1.x += 2 * BLOCK_SIZE;
+
+                pieceClickedWhite(cord)->setCordinate(cord1);
+                _castleLeftNow = false;
+                _castleRightNow = false;
+                _castleLeftPotential = false;
+                _castleRightPotential = false;
+            }
+        }
+        else
+        {
+            cord.x = BOARD_POSITION_X;
+            cord.y = BOARD_POSITION_Y;
+            cord1 = cord;
+            cord1.x += 3 * BLOCK_SIZE;
+            if ( _castleLeftNow && _lastMovedPiece->getPieceId() == Pieces::King  && kingCastle.x == BOARD_POSITION_X + 2 * BLOCK_SIZE )
+            {
+                pieceClickedBlack(cord)->setCordinate(cord1);
+                _castleLeftNow = false;
+                _castleRightNow = false;
+                _castleLeftPotential = false;
+                _castleRightPotential = false;
+            }
+            else if ( _castleRightNow && _lastMovedPiece->getPieceId() == Pieces::King  && kingCastle.x == BOARD_POSITION_X + 6 * BLOCK_SIZE )
+            {
+                cord.x += 7 * BLOCK_SIZE;
+                cord1.x += 2 * BLOCK_SIZE;
+
+                pieceClickedBlack(cord)->setCordinate(cord1);
+                _castleLeftNow = false;
+                _castleRightNow = false;
+                _castleLeftPotential = false;
+                _castleRightPotential = false;
             }
         }
     }

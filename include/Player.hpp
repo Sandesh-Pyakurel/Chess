@@ -28,7 +28,11 @@ namespace Chess
         void handlePiecePromotion( int promoted_piece );
 
 
+        void setLastMovedPiece(Piece* piece) { _lastMovedPiece = piece; }
         void setCord( Cordinate coord ) { this->coord = coord; }
+
+        Cordinate getCastlingPosition() { return kingCastle; }
+        Cordinate setCastlingPosition(Cordinate cord) { kingCastle = cord; }
 
         void Update(  );
         void Draw(  );
@@ -39,7 +43,17 @@ namespace Chess
         Piece* _tempPiece;
         GameDataRef _data;
 
+        bool _castleLeftPotential = true;
+        bool _castleRightPotential = true;
+
+        bool _castleLeftNow = false;
+        bool _castleRightNow = false;
+
+        Piece* _lastMovedPiece = nullptr;
+
         Cordinate coord;
+
+        Cordinate kingCastle;
 
         std::vector<Cordinate> _moves;
         std::vector<Cordinate> _tempmoves;

@@ -98,6 +98,8 @@ namespace Chess
                                         _player2->pieceClickedBlack( cord )->setCaptured(  ); // deleting if captured.
                                     }
 
+                                    _player1->setLastMovedPiece( _clickedPiece );
+                                    _player1->setCastlingPosition(cord);
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
                                     if ( _player1->checkPromotion( _clickedPiece ) ) // handling promotion condition for white piece.
                                     {
@@ -125,8 +127,10 @@ namespace Chess
                                     {
                                         _player1->pieceClickedWhite( cord )->setCaptured(  );
                                     }
+                                    _player2->setLastMovedPiece( _clickedPiece );
+                                    _player2->setCastlingPosition(cord);
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
-                                    if ( _player1->checkPromotion( _clickedPiece ) ) // handling promotion condition for black piece.
+                                    if ( _player2->checkPromotion( _clickedPiece ) ) // handling promotion condition for black piece.
                                     {
                                         _board->compBlackProm();
                                         _player2->setCord( cord );
