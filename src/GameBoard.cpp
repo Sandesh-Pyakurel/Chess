@@ -77,6 +77,48 @@ namespace Chess
         this->_isWhiteProm = !_isWhiteProm;
     }
 
+    Cordinate GameBoard::promotionPieceStartLocation()
+    {
+        Cordinate coord;
+
+        if ( _isWhiteProm )
+        {
+            coord.x = _wpromotionPieces[0].getPosition().x;
+            coord.y = _wpromotionPieces[0].getPosition().y; 
+
+            return coord; 
+        }
+        if ( _isBlackProm )
+        {
+            coord.x = _bpromotionPieces[0].getPosition().x;
+            coord.y = _bpromotionPieces[0].getPosition().y;
+
+            return coord;
+        }
+    }
+
+    Cordinate GameBoard::promotionPieceEndLocation()
+    {
+        Cordinate coord;
+
+        if ( _isWhiteProm )
+        {
+            coord.x = _wpromotionPieces[3].getPosition().x + 0.6 * BLOCK_SIZE;
+            coord.y = _wpromotionPieces[3].getPosition().y + 0.6 * BLOCK_SIZE; 
+
+            return coord; 
+        }
+        if ( _isBlackProm )
+        {
+            coord.x = _bpromotionPieces[3].getPosition().x + 0.6 * BLOCK_SIZE;
+            coord.y = _bpromotionPieces[3].getPosition().y + 0.6 * BLOCK_SIZE;
+
+            return coord;
+        }
+    }
+
+
+
 
     void GameBoard::highlight( std::vector<Cordinate>* moves )
     {

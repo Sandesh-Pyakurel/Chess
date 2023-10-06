@@ -2,6 +2,7 @@
 
 #include "Game.hpp"
 #include "DEFINITIONS.hpp"
+#include "GameBoard.hpp"
 #include "Piece.hpp"
 
 #include <iostream>
@@ -23,6 +24,11 @@ namespace Chess
         bool isPieceAtWhite( Cordinate cord );
         bool isPieceAtBlack( Cordinate cord );
         void setIsWhite( );
+        bool checkPromotion( Piece* clickedPiece );
+        void handlePiecePromotion( int promoted_piece );
+
+
+        void setCord( Cordinate coord ) { this->coord = coord; }
 
         void Update(  );
         void Draw(  );
@@ -32,6 +38,8 @@ namespace Chess
         bool _removeCaptured;
         Piece* _tempPiece;
         GameDataRef _data;
+
+        Cordinate coord;
 
         std::vector<Cordinate> _moves;
         std::vector<Cordinate> _tempmoves;

@@ -51,6 +51,29 @@ namespace Chess
                 int mouse_x = sf::Mouse::getPosition( _data->window ).x;
                 int mouse_y = sf::Mouse::getPosition( _data->window ).y;
 
+                // processing white promotion if condition is true.
+                if ( _board->isWhiteProm() )
+                {
+                    if ( (mouse_x >= _board->promotionPieceStartLocation().x && mouse_y >= _board->promotionPieceStartLocation().y) && (mouse_x <= _board->promotionPieceEndLocation().x && mouse_y <= _board->promotionPieceEndLocation().y) )
+                    {
+                        int promoted_piece = (mouse_x - _board->promotionPieceStartLocation().x) / (0.6 * BLOCK_SIZE);
+                        _player1->handlePiecePromotion( promoted_piece );
+                        _board->compWhiteProm();
+                    }
+                    break;
+                }
+
+                 if ( _board->isBlackProm() )
+                {
+                    if ( (mouse_x >= _board->promotionPieceStartLocation().x && mouse_y >= _board->promotionPieceStartLocation().y) && (mouse_x <= _board->promotionPieceEndLocation().x && mouse_y <= _board->promotionPieceEndLocation().y) )
+                    {
+                        int promoted_piece = (mouse_x - _board->promotionPieceStartLocation().x) / (0.6 * BLOCK_SIZE);
+                        _player2->handlePiecePromotion( promoted_piece );
+                        _board->compBlackProm();
+                    }
+                    break;
+                }               
+
                 // Checking if mouse coordinate is in the board. 
 
                 if(((mouse_x >= BOARD_POSITION_X) && (mouse_x <= BOARD_POSITION_X + 8*BLOCK_SIZE )) && ( (mouse_y >= BOARD_POSITION_Y) && (mouse_y <= BOARD_POSITION_Y + 8*BLOCK_SIZE )))
@@ -76,6 +99,11 @@ namespace Chess
                                     }
 
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
+                                    if ( _player1->checkPromotion( _clickedPiece ) ) // handling promotion condition for white piece.
+                                    {
+                                        _board->compWhiteProm();
+                                        _player1->setCord( cord );
+                                    }
                                     _clickedPiece = nullptr;
                                     _isWhiteTurn = !_isWhiteTurn;
                                     _player1->removeMoves( );
@@ -98,6 +126,11 @@ namespace Chess
                                         _player1->pieceClickedWhite( cord )->setCaptured(  );
                                     }
                                     _clickedPiece->setCordinate( cord ); // changing location if everything is valid.
+                                    if ( _player1->checkPromotion( _clickedPiece ) ) // handling promotion condition for black piece.
+                                    {
+                                        _board->compBlackProm();
+                                        _player2->setCord( cord );
+                                    }                       
                                     _clickedPiece = nullptr;
                                     _isWhiteTurn = !_isWhiteTurn;
                                     _player2->removeMoves( );

@@ -96,6 +96,57 @@ namespace Chess
         _moves.clear();
     }
 
+    bool Player::checkPromotion( Piece* clickedPiece )
+    {
+        if ( clickedPiece->getPieceId() == Pieces::Pawn && (clickedPiece->getCordinate().y == BOARD_POSITION_Y + 7 * BLOCK_SIZE  ||   clickedPiece->getCordinate().y == BOARD_POSITION_Y + 0 * BLOCK_SIZE) ) 
+        {
+            clickedPiece->setCaptured();
+            return true;
+        }
+    }
+
+    void Player::handlePiecePromotion( int promoted_piece )
+    {
+        if ( _isWhite )
+        {
+            if ( promoted_piece == 0 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Queen, true, "White Queen", coord.x, coord.y));
+            }
+            if ( promoted_piece == 1 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Rook, true, "White Rook", coord.x, coord.y));
+            }
+            if ( promoted_piece == 2 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Bishop, true, "White Bishop", coord.x, coord.y));
+            }
+            if ( promoted_piece == 3 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Knight, true, "White Knight", coord.x, coord.y));
+            }
+        }
+        else 
+        {
+            if ( promoted_piece == 0 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Queen, false, "Black Queen", coord.x, coord.y));
+            }
+            if ( promoted_piece == 1 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Rook, false, "Black Rook", coord.x, coord.y));
+            }
+            if ( promoted_piece == 2 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Bishop, false, "Black Bishop", coord.x, coord.y));
+            }
+            if ( promoted_piece == 3 )
+            {
+                _pieces.push_back(new Piece(_data, Pieces::Knight, false, "Black Knight", coord.x, coord.y));
+            }
+        }
+    }
+
     // Helper function for simulating moves looking for check.
     void Player::setIsWhite( )
     {
