@@ -244,7 +244,7 @@ namespace Chess
                 {
                     if ( !(isPieceAtBlack(cord1) || isPieceAtWhite(cord1)) && !(isPieceAtBlack(cord2) || isPieceAtWhite(cord2)) && !(isPieceAtBlack(cord3) || isPieceAtWhite(cord3)) )
                     {
-                        if ( !isAtCheck(cord1) && !isAtCheck(cord2) && !isAtCheck(cord3) )
+                        if ( !isAtCheck(cord2) && !isAtCheck(cord3) )
                         {
                             _tempmoves.push_back( cord2 );
                             _castleLeftNow = true;
