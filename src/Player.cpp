@@ -147,6 +147,15 @@ namespace Chess
         }
     }
 
+
+    void Player::resetEnPass()
+    {
+        for ( int i = 0; i < _pieces.size(); i++ )
+        {
+            _pieces.at( i )->unSetEnPass( );
+        }
+    }
+
     // Helper function for simulating moves looking for check.
     void Player::setIsWhite( )
     {
@@ -433,6 +442,19 @@ namespace Chess
             {
                 _moves.push_back(cord3);
             }
+
+            if ( clickedPiece->getEnPassRight() )
+            {
+                cord.x += BLOCK_SIZE;
+                _moves.push_back( cord );
+                _isEnPassAvil = true;
+            }
+            else if ( clickedPiece->getEnPassLeft() )
+            {
+                cord.x -= BLOCK_SIZE;
+                _moves.push_back( cord );
+                _isEnPassAvil = true;
+            }
         }
         else
         {
@@ -477,6 +499,19 @@ namespace Chess
             if (flag1)
             {
                 _moves.push_back(cord3);
+            }
+
+            if ( clickedPiece->getEnPassRight() )
+            {
+                cord.x += BLOCK_SIZE;
+                _moves.push_back( cord );
+                _isEnPassAvil = true;
+            }
+            else if ( clickedPiece->getEnPassLeft() )
+            {
+                cord.x -= BLOCK_SIZE;
+                _moves.push_back( cord );
+                _isEnPassAvil = true;
             }
         }
     }
@@ -1340,6 +1375,93 @@ namespace Chess
                 _castleRightNow = false;
                 _castleLeftPotential = false;
                 _castleRightPotential = false;
+            }
+        }
+
+        if ( _lastMovedPiece != nullptr && ( _lastMovedPiece->getPieceId() == Pieces::Pawn ) )
+        {
+            if ( _isWhite )
+            {
+                if ( lastPositon.y == BOARD_POSITION_Y + 6 * BLOCK_SIZE && kingCastle.y == BOARD_POSITION_Y + 4 * BLOCK_SIZE )
+                {
+                    Cordinate cord2 = kingCastle;
+                    Cordinate cord3 = kingCastle;
+                    cord2.x -= BLOCK_SIZE;
+                    cord3.x += BLOCK_SIZE;
+
+                    if ( cord2.x >= BOARD_POSITION_X )
+                    {
+                        if ( isPieceAtBlack( cord2 ) && ( pieceClickedBlack( cord2 )->getPieceId() == Pieces::Pawn ) )
+                        {
+                            pieceClickedBlack( cord2 )->setEnPassRight(); 
+
+                        }
+                    }
+                    if ( cord3.x <= BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                    {
+                        if ( isPieceAtBlack( cord3 ) && ( pieceClickedBlack( cord3 )->getPieceId() == Pieces::Pawn ) )
+                        {
+                            pieceClickedBlack( cord3 )->setEnPassLeft(); 
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+                if ( lastPositon.y == BOARD_POSITION_Y + 1 * BLOCK_SIZE && kingCastle.y == BOARD_POSITION_Y + 3 * BLOCK_SIZE )
+                {
+                    Cordinate cord2 = kingCastle;
+                    Cordinate cord3 = kingCastle;
+                    cord2.x -= BLOCK_SIZE;
+                    cord3.x += BLOCK_SIZE;
+
+                    if ( cord2.x >= BOARD_POSITION_X )
+                    {
+                        if ( isPieceAtWhite( cord2 ) && ( pieceClickedWhite( cord2 )->getPieceId() == Pieces::Pawn ) )
+                        {
+                            pieceClickedWhite( cord2 )->setEnPassRight(); 
+                        }
+                    }
+                    if ( cord3.x <= BOARD_POSITION_X + 7 * BLOCK_SIZE )
+                    {
+                        if ( isPieceAtWhite( cord3 ) && ( pieceClickedWhite( cord3 )->getPieceId() == Pieces::Pawn ) )
+                        {
+                            pieceClickedWhite( cord3 )->setEnPassLeft(); 
+                        }
+                    }
+                }
+ 
+            }
+        }
+
+        if ( _isEnPassAvil && ( _lastMovedPiece->getPieceId() == Pieces::Pawn ) )
+        {
+            if ( _isWhite )
+            {
+                if ( lastPositon.y == BOARD_POSITION_Y + 3 * BLOCK_SIZE && ( kingCastle.x == lastPositon.x + BLOCK_SIZE || kingCastle.x == lastPositon.x - BLOCK_SIZE) )
+                {
+                    Cordinate cord2 = kingCastle;
+                    cord2.y += BLOCK_SIZE;
+                    if ( isPieceAtBlack(cord2) && pieceClickedBlack(cord2)->getPieceId() == Pieces::Pawn )
+                    {
+                        pieceClickedBlack(cord2)->setCaptured();
+                        _isEnPassAvil = false;
+                    }
+                }
+            }
+            else
+            {
+                if ( lastPositon.y == BOARD_POSITION_Y + 4 * BLOCK_SIZE && ( kingCastle.x == lastPositon.x + BLOCK_SIZE || kingCastle.x == lastPositon.x - BLOCK_SIZE) )
+                {
+                    Cordinate cord2 = kingCastle;
+                    cord2.y -= BLOCK_SIZE;
+                    if ( isPieceAtWhite(cord2) && pieceClickedWhite(cord2)->getPieceId() == Pieces::Pawn )
+                    {
+                        pieceClickedWhite(cord2)->setCaptured();
+                        _isEnPassAvil = false;
+                    }
+                }
             }
         }
     }

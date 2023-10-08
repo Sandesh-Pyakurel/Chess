@@ -28,11 +28,13 @@ namespace Chess
         void handlePiecePromotion( int promoted_piece );
 
 
-        void setLastMovedPiece(Piece* piece) { _lastMovedPiece = piece; }
+        void setLastMovedPiece(Piece* piece) { _lastMovedPiece = piece; lastPositon = piece->getCordinate(); }
         void setCord( Cordinate coord ) { this->coord = coord; }
 
         Cordinate getCastlingPosition() { return kingCastle; }
         Cordinate setCastlingPosition(Cordinate cord) { kingCastle = cord; }
+
+        void resetEnPass();
 
         void Update(  );
         void Draw(  );
@@ -49,7 +51,10 @@ namespace Chess
         bool _castleLeftNow = false;
         bool _castleRightNow = false;
 
+        bool _isEnPassAvil = false;
+
         Piece* _lastMovedPiece = nullptr;
+        Cordinate lastPositon = {0,0};
 
         Cordinate coord;
 

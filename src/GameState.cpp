@@ -106,6 +106,7 @@ namespace Chess
                                         _board->compWhiteProm();
                                         _player1->setCord( cord );
                                     }
+                                    _player1->resetEnPass();
                                     _clickedPiece = nullptr;
                                     _isWhiteTurn = !_isWhiteTurn;
                                     _player1->removeMoves( );
@@ -135,6 +136,7 @@ namespace Chess
                                         _board->compBlackProm();
                                         _player2->setCord( cord );
                                     }                       
+                                    _player2->resetEnPass();
                                     _clickedPiece = nullptr;
                                     _isWhiteTurn = !_isWhiteTurn;
                                     _player2->removeMoves( );

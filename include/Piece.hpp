@@ -38,6 +38,13 @@ namespace Chess
         void Update(  );
         void Draw(  );
 
+        void unSetEnPass() { _isEnPassLeft = false; _isEnPassRight = false; }
+        void setEnPassRight() { _isEnPassRight = true; }
+        void setEnPassLeft() { _isEnPassLeft = true; }
+        bool getEnPassRight() { return _isEnPassRight; }
+        bool getEnPassLeft() { return _isEnPassLeft; }
+
+
     private:
 
         GameDataRef _data;
@@ -45,6 +52,9 @@ namespace Chess
         bool _isWhite;
         struct Cordinate _cord;
         bool _isCaptured = false;
+
+        bool _isEnPassLeft = false;
+        bool _isEnPassRight = false;
 
         sf::Sprite _piece;
         
